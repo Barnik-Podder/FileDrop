@@ -134,7 +134,4 @@ schedule.scheduleJob("*/30 * * * *", async () => {
     await deleteExpiredFiles();
 });
 
-// Run cleanup & rescheduling on server start
-handleStartupTasks();
-
-module.exports = { uploadFile };
+module.exports = { uploadFile, handleStartupTasks };
