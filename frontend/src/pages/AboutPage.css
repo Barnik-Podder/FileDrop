@@ -43,6 +43,13 @@
     color: #222;
 }
 
+.about-link{
+    display: inline-flex;
+    align-items: center;
+    width: 14vw;
+    justify-content: space-around;
+}
+
 @media (max-width: 600px) {
     .about-container {
         width: 90%;
