@@ -31,7 +31,6 @@ const Home = () => {
             return;
         }
 
-        console.log("Uploading file:", file);
         const formData = new FormData();
         formData.append("file", file);
         formData.append("deleteAfter", deleteAfter);
