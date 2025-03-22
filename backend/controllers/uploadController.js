@@ -18,13 +18,13 @@ const uploadFile = async (req, res) => {
         // Extract Cloudinary file details
         const { path, size, filename, originalname } = req.file;
 
-        // Calculate delete time
+        // Calculate delete time (convert to UTC)
         const deleteAt = new Date(Date.now() + deleteAfter * 60 * 1000);
 
         // Save file details to MongoDB
         const newFile = new File({
             filename: originalname,
-            size: size, 
+            size: size,
             format: originalname.split('.').pop(),
             fileLink: path,
             cloudinaryId: filename,
@@ -33,11 +33,8 @@ const uploadFile = async (req, res) => {
 
         await newFile.save();
 
-        // Schedule deletion (Ensures deletion even after a restart)
-        schedule.scheduleJob(deleteAt, async () => {
-            console.log(`Scheduled deletion for file ${newFile._id}`);
-            await deleteFile(newFile._id, newFile.cloudinaryId);
-        });
+        // Schedule deletion
+        scheduleDeletion(newFile._id, newFile.cloudinaryId, deleteAt);
 
         res.json({
             message: "File uploaded successfully",
@@ -61,7 +58,7 @@ const getResourceType = (filename) => {
     return "raw"; // PDFs, DOCX, ZIP, etc.
 };
 
-// Delete file controller
+// Delete file function
 const deleteFile = async (fileId, cloudinaryId) => {
     try {
         // Fetch file details from MongoDB
@@ -89,8 +86,31 @@ const deleteFile = async (fileId, cloudinaryId) => {
     }
 };
 
-// Run a scheduled cleanup job every hour (for missed deletions if the server restarts)
-schedule.scheduleJob("0 * * * *", async () => {
+// Schedule file deletion (Ensures execution even if the server restarts)
+const scheduleDeletion = (fileId, cloudinaryId, deleteAt) => {
+    const delay = new Date(deleteAt).getTime() - Date.now();
+
+    if (delay <= 0) {
+        console.log("Skipping past deletion date...");
+        deleteFile(fileId, cloudinaryId);
+        return;
+    }
+
+    console.log(`Scheduled deletion for file ${fileId} at ${deleteAt}`);
+
+    // Primary scheduler (node-schedule)
+    schedule.scheduleJob(new Date(deleteAt), () => {
+        deleteFile(fileId, cloudinaryId);
+    });
+
+    // Backup using setTimeout
+    setTimeout(() => {
+        deleteFile(fileId, cloudinaryId);
+    }, delay);
+};
+
+// Run a scheduled cleanup job every 30 minutes (Handles missed deletions)
+schedule.scheduleJob("*/30 * * * *", async () => {
     console.log("Running periodic file cleanup...");
     const expiredFiles = await File.find({ deleteAt: { $lt: new Date() } });
 
@@ -98,5 +118,20 @@ schedule.scheduleJob("0 * * * *", async () => {
         await deleteFile(file._id, file.cloudinaryId);
     }
 });
+
+
+// Reschedule pending deletions on server start
+const rescheduleDeletions = async () => {
+    const pendingFiles = await File.find({ deleteAt: { $gt: new Date() } });
+
+    pendingFiles.forEach(file => {
+        scheduleDeletion(file._id, file.cloudinaryId, file.deleteAt);
+    });
+
+    console.log(`Rescheduled ${pendingFiles.length} deletions.`);
+};
+
+// Run when server starts
+rescheduleDeletions();
 
 module.exports = { uploadFile };
