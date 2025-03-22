@@ -1,0 +1,14 @@
+.footContainer{
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: var(--head-foot-color);
+    padding: 1rem;
+    height: 10vh;
+}
+
+.footContainer p{
+    /* use to set the font-size of the footer text */
+    font-size: 1.3rem;
+}

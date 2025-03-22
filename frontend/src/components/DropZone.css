@@ -1,0 +1,4 @@
+.dropzone-container .upload{
+    /* contains the upload cloud image inside the drag area */
+    width: 8rem;
+}

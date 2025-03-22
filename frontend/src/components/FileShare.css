@@ -1,0 +1,60 @@
+.filelink p {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.filelink .input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px;
+    background: #fff;
+    margin-top: 8px;
+}
+
+.filelink input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #333;
+    background: transparent;
+}
+
+/* Copy icon styling */
+.filelink .copy-icon {
+    cursor: pointer;
+    color: #007bff;
+    transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+    font-size: 20px;
+}
+
+/* Hover effect */
+.filelink .copy-icon:hover {
+    color: #0056b3;
+}
+
+/* Click animation */
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+.filelink .copy-icon.clicked {
+    animation: pop 0.3s ease-in-out;
+}
+
+.filelink .qr-container {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.instruction{
+    padding: 10px 0px;
+}

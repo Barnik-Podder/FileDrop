@@ -1,0 +1,15 @@
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+:root{
+  --head-foot-color: linear-gradient(120deg, #1e74fdeb 0%, #5fc5f5cc 100%);
+  --main-color: linear-gradient(120deg, #8ec5fcc1 0%, #afd5fac1 100%);
+  --outerBox-color: rgb(239, 239, 240);
+  --font-color: aliceblue;
+  --innerBorder-color: rgba(64, 198, 229, 0.621);
+  --button-color: #1e74fdeb;
+}

@@ -1,0 +1,122 @@
+/* Header Styles */
+.navContainer nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 5rem;
+    font-size: 1.5rem;
+    background: var(--head-foot-color);
+    height: 15.8vh;
+    position: relative;
+}
+
+/* Font color */
+.color {
+    color: var(--font-color);
+}
+
+/* Brand section (logo + name) */
+.navContainer .brand {
+    display: flex;
+    align-items: center;
+    width: 16rem;
+}
+
+.navContainer .brand .brandName {
+    text-decoration: none;
+}
+
+/* Default Navigation Links (Shown on Large Screens) */
+.navContainer .navLinks {
+    display: flex;
+}
+
+.navContainer .navLinks ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+
+.navContainer .navLinks ul li {
+    padding: 0.7rem;
+    font-weight: 600;
+}
+
+.navContainer .navLinks ul li .color{
+    text-decoration: none;
+}
+
+.navContainer .navLinks ul li .color:hover {
+    color: rgba(98, 98, 98, 0.481);
+}
+
+/* Hamburger Menu Icon */
+.menuIcon {
+    display: none;
+    cursor: pointer;
+}
+
+/* Popup Navigation for Mobile */
+.navPopup {
+    position: absolute;
+    top: 100px;
+    right: 20px;
+    width: 200px;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    flex-direction: column;
+    padding: 15px;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Show popup when active */
+.navPopup.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Popup menu links */
+.navPopup ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navPopup ul li {
+    padding: 10px;
+}
+
+.navPopup ul li a {
+    text-decoration: none;
+    /* font-weight: 600; */
+    color: #333;
+    transition: 0.3s;
+}
+
+.navPopup ul li a:hover {
+    color: #007bff;
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 783px) {
+    .menuIcon {
+        display: block;
+    }
+
+    .navContainer .navLinks {
+        display: none; /* Hide normal nav links on small screens */
+    }
+
+    .navPopup {
+        display: flex;
+    }
+    .navContainer nav{
+        padding: 0px;
+    }
+}

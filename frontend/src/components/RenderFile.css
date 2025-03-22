@@ -1,0 +1,15 @@
+.fileInfo{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.fileInfo .fileImg{
+    width: 2.5rem;
+}
+
+@media screen and (max-width: 372px) {
+    .fileInfo{
+        font-size: 1rem;
+    }
+}

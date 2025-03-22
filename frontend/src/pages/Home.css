@@ -1,0 +1,84 @@
+.mainContainer{
+    /* Parent of the entire main contents, not talking about the <main> */
+    background-image: var(--main-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 70vh;
+    height: fit-content;
+    padding: 2rem;
+}
+
+.mainContainer .outerBox{
+    /* Parent of the fileUpload form */
+    background-color: var(--outerBox-color);
+    border-radius: 10px;
+}
+
+.mainContainer .outerBox .fileUpload{
+    /* Drag area where you have to upload the file */
+    min-width: 30vw;
+    min-height: 55vh;
+    text-align: center;
+    font-size: 1rem;
+    border: 2px dashed var(--innerBorder-color);
+    border-radius: 10px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.deleteAfter{
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.mainContainer .fileUpload .button{
+    padding: 3px;
+    margin: 21px 0px;
+    width: 6.5em;
+    font-size: 1.35rem;
+    font-weight: 700;
+    background-color: var(--button-color);
+    color: var(--font-color);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.mainContainer .fileUpload .button:hover{
+    box-shadow: 0px 1px 17px 1px var(--button-color);
+}
+
+
+.imageIllustration img{
+    /* It contains the image illustration on the right side */
+    width: 29.09vw;
+}
+
+@media screen and (max-width: 1118px){
+    .mainContainer{
+        flex-direction: column;
+    }
+
+    .fileUpload{
+        width: 75vw;
+        height: 40vh;
+    }
+    /* .outerBox{
+        width: 75vw;
+        height: 40vh;
+    } */
+    
+    .imageIllustration img{
+        width: 80vw;
+    }
+
+    .mainContainer .outerBox .fileUpload{
+        height: 65vh;
+    }
+
+}
