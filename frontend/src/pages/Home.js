@@ -52,8 +52,6 @@ const Home = () => {
             });
 
         } catch (error) {
-            console.log(error);
-            
             toast.dismiss(toastId);
             toast.error("Upload failed! Try again.", {
                 position: "top-center",

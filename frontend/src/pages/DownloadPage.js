@@ -42,19 +42,14 @@ const DownloadPage = () => {
 
         } catch (error) {
             let errorMessage = "An unexpected error occurred";
-
             // Check if error response exists and is a blob
             if (error.response && error.response.data instanceof Blob) {
-                try {
-                    const text = await error.response.data.text(); // Convert blob to text
-                    const json = JSON.parse(text); // Parse JSON error message
-                    errorMessage = json.message || errorMessage;
-                } catch (blobError) {
-                    console.error("Error parsing blob response:", blobError);
-                }
-            } else {
-                errorMessage = error?.message || errorMessage;
+                const text = await error.response.data.text(); // Convert blob to text
+                const json = JSON.parse(text); // Parse JSON error message
+                errorMessage = json.message || errorMessage;
+
             }
+
             setFile(null);
             setError(errorMessage);
             toast.update(toastId, { render: "Download failed!", type: "error", isLoading: false, autoClose: 3000 });

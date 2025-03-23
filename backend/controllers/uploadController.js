@@ -1,5 +1,4 @@
 const File = require('../models/Files');
-const schedule = require('node-schedule');
 const deleteFile = require('../controllers/deleteController');
 
 // Upload file controller

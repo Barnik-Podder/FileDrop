@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { handleStartupTasks } = require('../controllers/uploadController');
 const deleteFile = require('../controllers/deleteController');
 require("dotenv").config();
 
