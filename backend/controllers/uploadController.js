@@ -17,7 +17,7 @@ const uploadFile = async (req, res) => {
 
         // Extract Cloudinary file details
         const { path, size, filename, originalname, } = req.file;
-        const { resource_Type } = req.fileResourceType;        
+        const resourceType = req.fileResourceType;     
 
         // Calculate delete time (convert to UTC)
         const deleteAt = new Date(Date.now() + deleteAfter * 60 * 1000);
@@ -28,7 +28,7 @@ const uploadFile = async (req, res) => {
             size: size,
             format: originalname.split('.').pop(),
             fileLink: path,
-            resouseType: resource_Type,
+            resourceType: resourceType,
             cloudinaryId: filename,
             deleteAt
         });
