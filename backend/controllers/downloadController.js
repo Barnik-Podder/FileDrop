@@ -5,6 +5,7 @@ const deleteFile = require('../controllers/deleteController');
 const downloadFile = async (req, res) => {
     try {
         const { id } = req.params;
+        deleteFile();
         const file = await File.findById(id);
 
         if (!file) {
