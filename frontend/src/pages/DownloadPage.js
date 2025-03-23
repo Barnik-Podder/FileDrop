@@ -21,16 +21,16 @@ const DownloadPage = () => {
                 setFile(res.data);
             } catch (err) {
                 setError(err?.response?.data?.message || "An unexpected error occurred");
-                toast.error(err?.response?.data?.message || "An unexpected error occurred",{
+                toast.error(err?.response?.data?.message || "An unexpected error occurred", {
                     position: "top-center"
                 })
-            } 
+            }
         };
         fileDetails();
     }, [id]);
 
     const handleDownload = async () => {
-        const toastId = toast.loading("Downloading file...",{
+        const toastId = toast.loading("Downloading file...", {
             position: "top-center"
         });
         try {
@@ -41,16 +41,31 @@ const DownloadPage = () => {
             toast.update(toastId, { render: "Download complete!", type: "success", isLoading: false, autoClose: 3000 });
 
         } catch (error) {
-            console.error("Error downloading file:", error);
+            let errorMessage = "An unexpected error occurred";
+
+            // Check if error response exists and is a blob
+            if (error.response && error.response.data instanceof Blob) {
+                try {
+                    const text = await error.response.data.text(); // Convert blob to text
+                    const json = JSON.parse(text); // Parse JSON error message
+                    errorMessage = json.message || errorMessage;
+                } catch (blobError) {
+                    console.error("Error parsing blob response:", blobError);
+                }
+            } else {
+                errorMessage = error?.message || errorMessage;
+            }
+            setFile(null);
+            setError(errorMessage);
             toast.update(toastId, { render: "Download failed!", type: "error", isLoading: false, autoClose: 3000 });
         }
-        
+
     };
 
     return (
         <>
             <Navbar />
-            <ToastContainer/>
+            <ToastContainer />
             <div className="mainContainer downloadMain">
                 <div className="outerBox">
                     <div className="fileUpload">
@@ -58,10 +73,10 @@ const DownloadPage = () => {
                         <RenderFile file={file} />
                         <p>{error}</p>
 
-                            <button className="button" onClick={handleDownload}>
-                                Download!
-                            </button>
-                        
+                        <button className="button" onClick={handleDownload}>
+                            Download!
+                        </button>
+
                     </div>
                 </div>
             </div>
