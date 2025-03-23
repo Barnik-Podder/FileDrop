@@ -16,13 +16,16 @@ const getResourceType = (filename) => {
 // Configure Multer Storage for Cloudinary
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
-    params: async (req, file) => ({
-        folder: 'uploads', // Cloudinary folder name
-        resource_type: getResourceType(file.originalname), // Determine resource type
-        public_id: `${Date.now()}-${file.originalname}`
-    }),
+    params: async (req, file) => {
+        const resourceType = getResourceType(file.originalname);
+        req.fileResourceType = resourceType; // Store resource_type in req
+        return {
+            folder: 'uploads',
+            resource_type: resourceType,
+            public_id: `${Date.now()}-${file.originalname}`
+        };
+    },
 });
-
 
 // File filter (accept all file types)
 const fileFilter = (req, file, cb) => {

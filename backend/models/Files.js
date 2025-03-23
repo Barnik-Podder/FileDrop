@@ -13,6 +13,10 @@ const filesSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    resourceType:{
+        type: String,
+        required: true
+    },
     fileLink:{
         type: String,
         required: true
