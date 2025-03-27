@@ -13,16 +13,24 @@ const getResourceType = (filename) => {
     return "raw"; // PDFs, DOCX, ZIP, etc.
 };
 
-// Configure Multer Storage for Cloudinary
+const sanitizeFilename = (filename) => {
+    return filename
+        .replace(/[^a-zA-Z0-9-_\.]/g, '_') // Replace invalid characters with underscores
+        .toLowerCase(); // Optionally convert to lowercase
+};
+
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: async (req, file) => {
         const resourceType = getResourceType(file.originalname);
         req.fileResourceType = resourceType; // Store resource_type in req
+
+        const sanitizedFilename = sanitizeFilename(file.originalname);
+
         return {
             folder: 'uploads',
             resource_type: resourceType,
-            public_id: `${Date.now()}-${file.originalname}`
+            public_id: `${Date.now()}-${sanitizedFilename}`
         };
     },
 });
@@ -32,6 +40,10 @@ const fileFilter = (req, file, cb) => {
     cb(null, true);
 };
 
-const upload = multer({ storage, fileFilter });
+const upload = multer({
+    storage,
+    fileFilter,
+    limits: { fileSize: 100 * 1024 * 1024 }
+});
 
 module.exports = upload;

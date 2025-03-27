@@ -13,9 +13,11 @@ const DownloadPage = () => {
     const { id } = useParams();
     const [file, setFile] = useState(null);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true); // Track loading state
 
     useEffect(() => {
         const fileDetails = async () => {
+            setLoading(true);
             try {
                 const res = await axios.get(`${process.env.REACT_APP_API_URI}/download/filedetails/${id}`);
                 setFile(res.data);
@@ -23,7 +25,9 @@ const DownloadPage = () => {
                 setError(err?.response?.data?.message || "An unexpected error occurred");
                 toast.error(err?.response?.data?.message || "An unexpected error occurred", {
                     position: "top-center"
-                })
+                });
+            } finally {
+                setLoading(false);
             }
         };
         fileDetails();
@@ -35,26 +39,21 @@ const DownloadPage = () => {
         });
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URI}/download/${id}`, {
-                responseType: 'blob',  // Important: Treat as a file
+                responseType: 'blob',
             });
             fileDownload(response.data, file.name);
             toast.update(toastId, { render: "Download complete!", type: "success", isLoading: false, autoClose: 3000 });
-
         } catch (error) {
             let errorMessage = "An unexpected error occurred";
-            // Check if error response exists and is a blob
             if (error.response && error.response.data instanceof Blob) {
-                const text = await error.response.data.text(); // Convert blob to text
-                const json = JSON.parse(text); // Parse JSON error message
+                const text = await error.response.data.text();
+                const json = JSON.parse(text);
                 errorMessage = json.message || errorMessage;
-
             }
-
             setFile(null);
             setError(errorMessage);
             toast.update(toastId, { render: "Download failed!", type: "error", isLoading: false, autoClose: 3000 });
         }
-
     };
 
     return (
@@ -65,13 +64,22 @@ const DownloadPage = () => {
                 <div className="outerBox">
                     <div className="fileUpload">
                         <img src={image} alt="download img" className="downloadImg" />
-                        <RenderFile file={file} />
-                        <p>{error}</p>
+                        
+                        {loading ? (
+                            <div className="loading-container">
+                                <span className="dot"></span>
+                                <span className="dot"></span>
+                                <span className="dot"></span>
+                            </div>
+                        ) : (
+                            <RenderFile file={file} />
+                        )}
 
-                        <button className="button" onClick={handleDownload}>
+                        {error && <p>{error}</p>}
+
+                        <button className="button" onClick={handleDownload} disabled={loading}>
                             Download!
                         </button>
-
                     </div>
                 </div>
             </div>

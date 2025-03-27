@@ -5,7 +5,7 @@ const deleteFile = require('../controllers/deleteController');
 const downloadFile = async (req, res) => {
     try {
         const { id } = req.params;
-        deleteFile();
+        await deleteFile();
         const file = await File.findById(id);
 
         if (!file) {
@@ -29,7 +29,7 @@ const getFileDetails = async(req, res)=>{
     try {
 
         const {id} = req.params;
-        deleteFile();
+        await deleteFile();
         const file = await File.findById(id);
         if (!file) {
             return res.status(404).json({ message: "Link has expired or the link is wrong!" });
