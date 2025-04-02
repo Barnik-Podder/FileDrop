@@ -37,8 +37,7 @@ const Navbar = () => {
                     <div className={`navPopup ${menuOpen ? "active" : ""}`}>
                         <ul>
                             <li><Link to="/" className="color" onClick={() => setMenuOpen(false)}>Home</Link></li>
-                            <li><Link to="/" className="color" onClick={() => setMenuOpen(false)}>About Us</Link></li>
-                            <li><Link to="/" className="color" onClick={() => setMenuOpen(false)}>Contact Us</Link></li>
+                            <li><Link to="/about" className="color" onClick={() => setMenuOpen(false)}>About Us</Link></li>
                         </ul>
                     </div>
                 </div>

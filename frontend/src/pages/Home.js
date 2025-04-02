@@ -13,6 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 const Home = () => {
     const [file, setFile] = useState(null);
     const [id, setId] = useState("");
+    const [error, setError] = useState("File size limit: 100MB for videos and 10MB for others");
     const [deleteAfter, setDeleteAfter] = useState(5); // Default 5 minutes
 
     const handleFileSelect = (selectedFile) => {
@@ -38,13 +39,13 @@ const Home = () => {
         const toastId = toast.loading("Uploading your file...");
 
         try {
-            
+
             const response = await axios.post(`${process.env.REACT_APP_API_URI}/api/upload`, formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
 
             setId(response.data.id);
-            toast.dismiss(toastId); 
+            toast.dismiss(toastId);
 
             toast.success("Upload complete! 🎉", {
                 position: "top-center",
@@ -53,7 +54,8 @@ const Home = () => {
 
         } catch (error) {
             toast.dismiss(toastId);
-            toast.error("Upload failed! Try again.", {
+            setError(error?.response?.data?.error);
+            toast.error(error?.response?.data?.error || "Upload failed! Try again.", {
                 position: "top-center",
             });
 
@@ -79,12 +81,16 @@ const Home = () => {
                                 <option value={10}>10 Minutes</option>
                                 <option value={30}>30 Minutes</option>
                             </select></>}
-                        {!id && <input
-                            type="submit"
-                            className="button"
-                            value="UPLOAD"
-                            onClick={handleUpload}
-                        />}
+                        {!id && <>
+                            <input
+                                type="submit"
+                                className="button"
+                                value="UPLOAD"
+                                onClick={handleUpload}
+                            />
+                            <p className='limit'>{error}</p>
+                        </>
+                        }
                     </div>
                 </div>
                 <div className="imageIllustration">

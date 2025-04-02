@@ -37,13 +37,24 @@ const storage = new CloudinaryStorage({
 
 // File filter (accept all file types)
 const fileFilter = (req, file, cb) => {
+    // const resourceType = getResourceType(file.originalname);
+    // const maxSize = resourceType === "video" ? 100 * 1024 * 1024 : 10 * 1024 * 1024; // 100 MB for videos, 10 MB for others
+
+    // if (file.size > maxSize) {
+    //     return cb(
+    //         new Error(
+    //             `File size exceeds the limit of ${
+    //                 resourceType === "video" ? "100MB" : "10MB"
+    //             } for ${resourceType} files.`
+    //         )
+    //     );
+    // }
     cb(null, true);
 };
 
 const upload = multer({
     storage,
-    fileFilter,
-    limits: { fileSize: 100 * 1024 * 1024 }
+    fileFilter // 10 MB limit
 });
 
 module.exports = upload;

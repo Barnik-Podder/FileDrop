@@ -7,9 +7,8 @@ const router = express.Router();
 router.post('/upload', (req, res, next) => {
     upload.single('file')(req, res, (err) => {
         if (err) {
-            // Handle Multer errors
-            if (err.code === 'LIMIT_FILE_SIZE') {
-                return res.status(400).json({ error: 'File size exceeds the limit of 100MB.' });
+            if (err.message.includes('File size too large')) {
+                return res.status(400).json({ error: "File size exceeds the limit." });
             }
             return res.status(500).json({ error: err.message });
         }
