@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import { LuCopy } from "react-icons/lu";
+import { TiTick } from "react-icons/ti";
 import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 import "./FileShare.css";
 
 const FileShare = ({ fileId }) => {
     const [isClicked, setIsClicked] = useState(false);
-    // const API_URL = import.meta.env.VITE_API_URL // imports backend url from .env
     if (!fileId) return null;
 
     const fileLink = `${window.location.origin}/download/${fileId}`;
@@ -18,7 +19,7 @@ const FileShare = ({ fileId }) => {
 
         // Add class for animation
         setIsClicked(true);
-        setTimeout(() => setIsClicked(false), 300); // Remove class after animation
+        setTimeout(() => setIsClicked(false), 2000); // Remove class after animation
     };
 
     return (
@@ -27,10 +28,14 @@ const FileShare = ({ fileId }) => {
             <p>Shareable Link:</p>
             <div className="input-container">
                 <input type="text" value={fileLink} readOnly />
-                <LuCopy 
-                    onClick={handleCopy} 
-                    className={`copy-icon ${isClicked ? "clicked" : ""}`} 
-                />
+                {isClicked ? (
+                    <TiTick className="tick-icon" />
+                ) : (
+                    <LuCopy 
+                        onClick={handleCopy} 
+                        className="copy-icon" 
+                    />
+                )}
             </div>
             <div className="qr-container">
                 <QRCodeCanvas value={fileLink} size={150} />
